@@ -1,0 +1,64 @@
+.home-page {
+  display: block;
+}
+
+.home-page-main-touch {
+  width: 100%;
+  height: 90vh;
+  margin: 0 0 auto 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.solve-maze, .new-maze {
+  width: 40vw;
+  height: 60vh;
+  border: 5px solid #148F10;
+  border-radius: 20px;
+  margin-right: 20px;
+}
+
+.image {
+  width: 100%;
+  height: 80%;
+  border-radius: 14px;
+  padding: 0;
+}
+
+.button-holder {
+  width: 100%;
+  height: 20%;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-holder button {
+  border: 2px solid orange;
+  color: orange;
+  background-color: #8F4A17;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+}
+
+.button-holder button:hover {
+  border: 3px solid lime;
+  color: lime;
+  font-weight: 500;
+  background-color: #5C44DB;
+}
+
+.footer {
+  height: 10vh;
+  margin-bottom: 5px;
+  color: #34DB2F;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=home-page.component.css.map */

@@ -1,0 +1,64 @@
+<div class="home-page">
+  <div class="home-page-main-touch">
+    <div class="solve-maze">
+      <img src="../../../assets/homepage/solve-maze.jpg" alt="Solve Your Maze here"  class="image">
+      <div class="button-holder">
+        <button mat-raised-button color="primary" routerLink="../main" (click)="sendTingleSolve()"><!--routerLink="../main" -->
+          <span>Solve Your Maze</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="new-maze">
+      <img src="../../../assets/homepage/meme.jpg" alt="Play with new Maze here"  class="image">
+      <div class="button-holder">
+        <button mat-raised-button color="primary" routerLink="../main" (click)="sendTinglePlay()">
+          <span>Play with new Maze here</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="contact-block">
+    <div id="social-media">
+      <div routerLink="home-page" class="game-logo">
+        <div><img src="../../../assets/sudoku_logo.jpg" alt="" class="game-icon"></div>
+        <p class="game-title">Sudoku</p>
+      </div>
+      <h3>Sudoku is an excellent way to relax and unwind while engaging the mind.
+        It provides a delightful mental exercise that can be enjoyed at one's own pace.
+        Whether played on paper, in puzzle books, or through digital apps,
+        Sudoku remains a go-to choice for those seeking intellectual entertainment.</h3>
+      <div id="social-media-element">
+        <a href="https://www.facebook.com/profile.php?id=100071543132965" target="_blank" id="sm-icon">
+          <img src="../../../assets/contact-icon/facebook-svgrepo-com.svg" alt="Icon" width="40" height="40">
+        </a>
+        <a href="https://www.instagram.com/strictd_19/?next=%2F" target="_blank" id="sm-icon">
+          <img src="../../../assets/contact-icon/instagram-1-svgrepo-com.svg" alt="Icon" width="40" height="40">
+        </a>
+      </div>
+    </div>
+
+    <div id="contact-info">
+      <h1>Contact Info</h1>
+      <div id="contact-info-location">
+        <mat-icon> location_on</mat-icon>
+        <p>2200 W Lowden St, Fort Worth, TX 76110, United States</p>
+      </div>
+      <div id="contact-info-phone">
+        <mat-icon> phone</mat-icon>
+        <p>+1 682-374-8227</p>
+      </div>
+      <div id="contact-info-email">
+        <mat-icon> email</mat-icon>
+        <p>do.t.nguyen@tcu.edu</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>
+      <p><mat-icon>copyright</mat-icon>Copyright by Pinterest</p>
+    </span>
+  </div>
+</div>

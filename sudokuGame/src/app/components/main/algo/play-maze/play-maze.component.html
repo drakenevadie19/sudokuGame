@@ -1,0 +1,43 @@
+<!-- <h2>Input your maze here and click Solve button to solve your quiz!</h2> -->
+<div class="solve-page">
+  <div id="maze">
+    <div class="grid-container" *ngFor="let row of mazeList; let i = index">
+      <mat-form-field class="grid-item" *ngFor="let element of row; let j = index">
+        <input matInput type="number" max="9" min="1" class="grid-input" [(ngModel)]="mazeList[i][j]" [disabled]="isDisabled">
+        <!-- <mat-hint>E</mat-hint> -->
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="direction">
+    <h2 class="guidance">Challenge yourself here!!</h2>
+    <div class="stop-watch">
+      <p id="timer">{{ time }}</p>
+    </div>
+    <div class="button-holder">
+      <button mat-raised-button color="primary" (click)="checkSolution()" class="solveButton" *ngIf="!started && stopTime">
+        <span>Start</span>
+      </button>
+      <button mat-raised-button color="primary" (click)="checkSolution()" class="solveButton" *ngIf="started && !stopTime">
+        <span>Pause</span>
+      </button>
+      <button mat-raised-button color="primary" (click)="checkSolution()" class="solveButton" *ngIf="started && stopTime">
+        <span>Continue</span>
+      </button>
+
+      <button mat-raised-button color="primary" (click)="reset()" class="solveButton">
+        <span>Reset</span>
+      </button>
+
+      <button mat-raised-button color="primary" (click)="fillMatrix()" class="solveButton">
+        <span>Load Problem</span>
+      </button>
+    </div>
+
+    <div id="notifiCation">
+      <p *ngIf="isSolve && canBesolve" style="color: lime;">The Maze is solved successfully</p>
+      <p *ngIf="!isSolve && !canBesolve" style="color: red;">We can not solve this maze</p>
+      <p *ngIf="!isSolve && canBesolve" style="color: orange;">If you can not finish it, we can help you</p>
+    </div>
+  </div>
+</div>
