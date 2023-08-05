@@ -1,20 +1,33 @@
 import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
+
+class MazeSquare {
+  value: any;
+  isDisable: boolean;
+
+  constructor(value: any, isDisable: boolean) {
+    this.value = value;
+    this.isDisable = isDisable;
+  }
+}
 
 @Component({
   selector: 'app-play-maze',
   templateUrl: './play-maze.component.html',
   styleUrls: ['./play-maze.component.scss']
 })
+
 export class PlayMazeComponent {
-  mazeList : number[][];
+  mazeList : MazeSquare[][];
   soluong:number = 9;
-  isDisabled: boolean = false;
-  input: string = "000000004,100009070,003702800,000070260,400000008,091060000,004203600,030140009,900000000";
+  // isDisabled: boolean = false;
+  input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
   x: String[] = [];
-  canBesolve: boolean = true;
+  // canBesolve: boolean = true;
   isSolve: boolean = false;
 
-  started: boolean = false;
+  gameStarted: boolean = false;
+  mazeReady: boolean = false;
 
   time: string = "00:00:00";
   stopTime: boolean = true;
@@ -25,27 +38,22 @@ export class PlayMazeComponent {
   min: number = 0;
   hr: number = 0;
 
+  checkButtonDisable: boolean= false;
 
   constructor() {
     this.mazeList = [];
-
-    // Define specific number of elements in each row
-    const elementsInEachRow = this.soluong;
-
-    // Initialize the array with certain number of rows
-    const numRows = this.soluong;
-
-    for (let i = 0; i < numRows; i++) {
-      this.mazeList[i] = Array(elementsInEachRow).fill(0); // Replace 0 with the default value you want for each element
+    for (let i=0;i<9;i++) {
+      for (let j=0;j<9;j++) {
+        this.mazeList[i][j] = new MazeSquare("", true);
+      }
     }
 
     console.log(this.mazeList);
-    // console.log(this.input);
   }
 
   //-------------------------------------------------------------------
+  //Timer
   timerCycle():void {
-
     if (this.stopTime == false) {
       this.sec = parseInt(this.second);
       this.min = parseInt(this.minute);
@@ -77,8 +85,6 @@ export class PlayMazeComponent {
         this.hour = this.hr.toString();
       }
 
-      console.log("-" + this.second + "-" + this.minute + "-" + this.hour + "-");
-
       this.time = this.hour + ":" + this.minute + ":" + this.second;
       setTimeout(() => {
         this.timerCycle();
@@ -86,38 +92,57 @@ export class PlayMazeComponent {
     }
   }
 
-  //-------------------------------------------------------------------
-  //To fill the maze into the matrix
-  fillMatrix() {
-    // Define specific number of elements in each row
-    const elementsInEachRow = this.soluong;
-    // Initialize the array with certain number of rows
-    const numRows = this.soluong;
+  //--------------------------------------------------------------------
+  //Start-Pause-Continue
+  startGame() {
+    this.gameStarted = true;
+    this.checkButtonDisable = false;
+    if (this.stopTime == true) {
+      this.stopTime = false;
+      this.timerCycle();
+    } else {
+      this.stopTime = true;
+    }
+  }
 
-    this.x = this.input.trim().split(',');
-    for (let i = 0; i < numRows; i++) {
-      for (let j = 0; j< elementsInEachRow;j++) {
-        if (this.x[i].charAt(j) == "0") {
-          this.mazeList[i][j] = 0;
-          this.isDisabled = false;
-        } else {
-          this.mazeList[i][j] = parseInt(this.x[i].charAt(j));
-          this.isDisabled = true;
-        }
+  pauseGame() {
+    this.gameStarted = true;
+    this.checkButtonDisable = true;
+    if (this.stopTime == true) {
+      this.stopTime = false;
+      this.timerCycle();
+    } else {
+      this.stopTime = true;
+    }
+
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j< 9;j++) {
+        this.mazeList[i][j].isDisable = true;
       }
     }
   }
 
-  //-----------------------------------------------------------------
-  //Clear the maze and
+  continueGame() {
+    this.gameStarted = true;
+    this.checkButtonDisable = false;
+    if (this.stopTime == true) {
+      this.stopTime = false;
+      this.timerCycle();
+    } else {
+      this.stopTime = true;
+    }
+  }
+
+  //-------------------------------------------------------------------
+  //Reset the maze and set button to start
   reset() {
-    this.canBesolve = true;
+    // this.canBesolve = true;
     this.isSolve = false;
     console.log(this.mazeList);
 
     //Reset the clock
     this.time= "00:00:00";
-    this.started = false;
+    this.gameStarted = false;
     this.stopTime = true;
     this.sec = 0;
     this.min = 0;
@@ -128,88 +153,145 @@ export class PlayMazeComponent {
 
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j< 9;j++) {
-        this.mazeList[i][j] = 0;
+        this.mazeList[i][j].value = "";
+        this.mazeList[i][j].isDisable = true;
       }
     }
-
     console.clear();
   }
 
-  //-----------------------------------------------------------------
-  //Processing core
-  r: number = 0;
-  c: number = 0;
-  board: number[][] = [];
-  count: number = 0;
+  //-------------------------------------------------------------------
+  //To fill the maze into the matrix
+  fillMatrix() {
+    this.mazeReady = true;
+    // Define specific number of elements in each row
+    const elementsInEachRow = this.soluong;
+    // Initialize the array with certain number of rows
+    const numRows = this.soluong;
 
-  checkSolution() {
-    this.started = true;
-    console.log(this.mazeList);
-    // if (this.solve(this.mazeList, 0 ,0)) {
-    //   console.log("Solve Successfully");
-    //   this.isSolve = true;
-    //   this.canBesolve = true;
-    // } else {
-    //   console.log("Solve Failed");
-    //   this.isSolve = false;
-    //   this.canBesolve = false;
-    // }
-    // console.log(this.mazeList);
-    // for (let i = 0; i < this.soluong; i++) {
-    //   for (let j = 0; j < this.soluong; j++) {
-    //     if (this.mazeList[i][j] != 0) {
-    //       this.isDisabled = true;
-    //     }
-    //   }
-    // }
+    this.x = this.input.trim().split(',');
+    for (let i = 0; i < numRows; i++) {
+      for (let j = 0; j< elementsInEachRow;j++) {
+        if (this.x[i].charAt(j) == "_") {
+          this.mazeList[i][j].value = "";
+          this.mazeList[i][j].isDisable = false;
+        } else {
+          this.mazeList[i][j].value = parseInt(this.x[i].charAt(j));
+          this.mazeList[i][j].isDisable = true;
+        }
+      }
+    }
 
+    this.gameStarted = true;
+    this.checkButtonDisable = false;
     if (this.stopTime == true) {
       this.stopTime = false;
       this.timerCycle();
-    } else {
-      this.stopTime = true;
     }
   }
 
-  solve(mazeList: number[][], r: number, c: number): boolean {
-    if(c===9 && r === 8) {
-      return true;
-    }
-    if(c === 9){
-        c = 0;
-        r++;
-    }
+  //-----------------------------------------------------------------
+  //Checking isValid?
+  checkSolution() {
+    let goodMaze: boolean = true;
 
-    if (mazeList[r][c] != 0) {
-      return this.solve(mazeList, r, c + 1);
-    } else {
-      for(let i = 1; i <= 9; i++){
-        if(this.isValid(mazeList, r, c, i)){
-          mazeList[r][c] = i;
-          if(this.solve(mazeList, r, c+1)) return true;
+    for (let i=0;i<9;i++) {
+      for (let j=0;j<9;j++) {
+        if (this.mazeList[i][j].value == "") {
+          this.mazeList[i][j].value = 0;
         }
-        mazeList[r][c] = 0;
+
+        for(let c1 = 0; c1 < 9; c1++) {
+          if(c1 != j && this.mazeList[i][j].value == this.mazeList[i][c1].value) {
+            // console.log("Pair ("+i+","+j+")="+this.mazeList[i][j]+"and " + "pair ("+i+","+c1+") = " + this.mazeList[i][c1]);
+            goodMaze = false;
+            break;
+          }
+        }
+
+        for(let r1 = 0; r1 < 9; r1++) {
+            if(r1 != i && this.mazeList[i][j].value == this.mazeList[r1][j].value) {
+              // console.log("Pair ("+i+","+j+")="+this.mazeList[i][j]+"and " + "pair ("+r1+","+j+") = " + this.mazeList[r1][j]);
+              goodMaze = false;
+              break;
+            }
+        }
+
+        let start_r = i - i%3;
+        let start_c = j - j%3;
+        for(let r1 = 0; r1 < 3; r1++){
+            for(let c1 = 0; c1 < 3; c1++){
+                if(i != (r1+start_r) && j != (c1+start_c) && this.mazeList[i][j].value  == this.mazeList[r1+start_r][c1+start_c].value) {
+                  // console.log("Pair ("+i+","+j+")="+this.mazeList[i][j]+"and " + "pair ("+(r1+start_r)+","+(c1+start_c)+") = " + this.mazeList[r1+start_r][c1+start_c]);
+                  goodMaze = false;
+                  break;
+                }
+            }
+        }
+
+        if (this.mazeList[i][j].value == 0) {
+          this.mazeList[i][j].value = "";
+          this.mazeList[i][j].isDisable = false;
+        }
       }
     }
-    return false;
+
+    if (goodMaze == false) {
+      this.isSolve = false;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Đồ Ngu',
+        showConfirmButton: true,
+        timer: 2506
+      })
+    } else {
+      this.isSolve = true;
+
+      if (!this.stopTime) {
+        this.stopTime = true;
+      }
+
+      let alertMessage = 'Congratulation! You finish the quiz with ' + this.time;
+      Swal.fire({
+        icon: 'success',
+        title: alertMessage,
+        showConfirmButton: true,
+        timer: 25060
+      })
+    }
   }
 
-  isValid(mazeList: number[][], r: number, c: number, val: number): boolean{
-    for(let c1 = 0; c1 < 9; c1++) {
-        if(c1 != c && val == mazeList[r][c1]) return false;
-    }
-
-    for(let r1 = 0; r1 < 9; r1++) {
-        if(r1 != r && val == mazeList[r1][c]) return false;
-    }
-
-    let start_r = r - r%3;
-    let start_c = c - c%3;
-    for(let r1 = 0; r1 < 3; r1++){
-        for(let c1 = 0; c1 < 3; c1++){
-            if(r1 != r && c1 != c && val == mazeList[r1+start_r][c1+start_c]) return false;
+  //----------------------------------------------------------------
+  //Add solution for testing
+  solution: string = "579638124,128459376,643712895,385974261,467321958,291865743,854293617,732146589,916587432";
+  addSolution() {
+    this.mazeReady = true;
+    this.x = this.solution.trim().split(',');
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j< 9;j++) {
+        if (this.x[i].charAt(j) == "0") {
+          this.mazeList[i][j].value = 0;
+          this.mazeList[i][j].isDisable = false;
+        } else {
+          this.mazeList[i][j].value = parseInt(this.x[i].charAt(j));
+          this.mazeList[i][j].isDisable = true;
         }
+      }
     }
-    return true;
   }
+
+  //------------------------------------------------------------------
+  solution_array: number[][] = [];
+  // generate_solution() {
+  //   let number_list = [1,2,3,4,5,6,7,8,9];
+  //   for (let i=0;i<9;i++) {
+  //     for (let j=0;j<9;j++) {
+  //       if (this.mazeList[i][j] == "") {
+
+  //       }
+  // //     }
+  //   }
+
+  // }
 }

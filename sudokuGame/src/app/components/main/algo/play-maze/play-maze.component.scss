@@ -16,7 +16,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .solve-page {
   display: flex;
-  // flex-wrap: wrap;
 }
 
 .grid-container {
@@ -24,18 +23,12 @@ input[type="number"]::-webkit-outer-spin-button {
   grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px;
 
   padding: 0;
-  // width: 540px;
-
-  // gap: 5px;
-
-  // row-gap: 10px;
-  // column-gap: 10px;
 }
 
 .grid-item {
   border-radius: 8px;
   border: 2px solid #148F10;
-  background-color: #e2e5de;
+  background-color: #98DB9C;
   border-collapse: collapse;
   padding: 0;
   font-size: 25px;
@@ -55,9 +48,6 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 //Timer -----------------------------
-.stop-watch {
-}
-
 #timer {
   font-size: 45px;
   line-height: 60px;
@@ -119,18 +109,13 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: white;
 }
 
-#notifiCation {
-  // color: blue;
-  // background-color: #8F4A17;
-  font-family: 'Roboto', sans-serif;
-  font-weight: lighter;
-}
-
 //----------------------------------------------------------------------------------------------
 //Responsive design
 @media screen and (max-width: 768px) {
   .solve-page {
     flex-direction: column;
+    // width: 100%;
+    justify-content: center;
   }
 
   #maze {
@@ -139,6 +124,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
   .direction {
     width: 100%;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 

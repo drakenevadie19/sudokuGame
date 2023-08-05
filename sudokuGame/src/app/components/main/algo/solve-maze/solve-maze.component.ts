@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-solve-maze',
@@ -10,7 +11,7 @@ export class SolveMazeComponent {
   mazeList : number[][];
   soluong:number = 9;
   isDisabled: boolean = false;
-  input: string = "";
+  input: string = "000000004,100009070,003702800,000070260,400000008,091060000,004203600,030140009,900000000";
   x: String[] = [];
   canBesolve: boolean = true;
   isSolve: boolean = false;
@@ -85,9 +86,22 @@ export class SolveMazeComponent {
   count: number = 0;
 
   solveMaze() {
+    // for (let i = 0; i < this.soluong; i++) {
+    //   for (let j = 0; j < this.soluong; j++) {
+    //     if (this.mazeList[i][j] == "") {
+    //       this.isDisabled = true;
+    //     }
+    //   }
+    // }
+
     console.log(this.mazeList);
     if (this.solve(this.mazeList, 0 ,0)) {
-      console.log("Solve Successfully");
+      Swal.fire({
+        icon: 'success',
+        title: 'We finish it!!',
+        showConfirmButton: true,
+        timer: 25060
+      })
       this.isSolve = true;
       this.canBesolve = true;
     } else {
