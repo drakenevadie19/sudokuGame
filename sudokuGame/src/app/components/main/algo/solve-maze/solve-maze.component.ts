@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
 })
 
 export class SolveMazeComponent {
-  mazeList : number[][];
+  mazeList : any[][];
   soluong:number = 9;
   isDisabled: boolean = false;
-  input: string = "000000004,100009070,003702800,000070260,400000008,091060000,004203600,030140009,900000000";
+  input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
   x: String[] = [];
   canBesolve: boolean = true;
   isSolve: boolean = false;
@@ -43,7 +43,7 @@ export class SolveMazeComponent {
     for (let i = 0; i < numRows; i++) {
       for (let j = 0; j< elementsInEachRow;j++) {
         if (this.x[i].charAt(j) == "_") {
-          this.mazeList[i][j] = 0;
+          this.mazeList[i][j] = "";
         } else {
           this.mazeList[i][j] = parseInt(this.x[i].charAt(j));
         }
@@ -65,12 +65,7 @@ export class SolveMazeComponent {
     for (let i = 0; i < numRows; i++) {
       this.mazeList[i] = Array(elementsInEachRow).fill(""); // Replace 0 with the default value you want for each element
     }
-    for (let i = 0; i < this.soluong; i++) {
-      for (let j = 0; j < this.soluong; j++) {
-        this.isDisabled = false;
-      }
-    }
-
+    this.isDisabled = false;
     console.clear();
   }
 
@@ -86,14 +81,6 @@ export class SolveMazeComponent {
   count: number = 0;
 
   solveMaze() {
-    // for (let i = 0; i < this.soluong; i++) {
-    //   for (let j = 0; j < this.soluong; j++) {
-    //     if (this.mazeList[i][j] == "") {
-    //       this.isDisabled = true;
-    //     }
-    //   }
-    // }
-
     console.log(this.mazeList);
     if (this.solve(this.mazeList, 0 ,0)) {
       Swal.fire({
@@ -104,19 +91,13 @@ export class SolveMazeComponent {
       })
       this.isSolve = true;
       this.canBesolve = true;
+      this.isDisabled = true;
     } else {
       console.log("Solve Failed");
       this.isSolve = false;
       this.canBesolve = false;
     }
     console.log(this.mazeList);
-    for (let i = 0; i < this.soluong; i++) {
-      for (let j = 0; j < this.soluong; j++) {
-        if (this.mazeList[i][j] != 0) {
-          this.isDisabled = true;
-        }
-      }
-    }
   }
 
   solve(mazeList: number[][], r: number, c: number): boolean {

@@ -1,15 +1,7 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
+import { MazeSquare } from './MazeSquare';
 
-class MazeSquare {
-  value: any;
-  isDisable: boolean;
-
-  constructor(value: any, isDisable: boolean) {
-    this.value = value;
-    this.isDisable = isDisable;
-  }
-}
 
 @Component({
   selector: 'app-play-maze',
@@ -18,7 +10,7 @@ class MazeSquare {
 })
 
 export class PlayMazeComponent {
-  mazeList : MazeSquare[][];
+  mazeList : MazeSquare[][] ;
   soluong:number = 9;
   // isDisabled: boolean = false;
   input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
@@ -43,6 +35,7 @@ export class PlayMazeComponent {
   constructor() {
     this.mazeList = [];
     for (let i=0;i<9;i++) {
+      this.mazeList[i] = [];
       for (let j=0;j<9;j++) {
         this.mazeList[i][j] = new MazeSquare("", true);
       }
