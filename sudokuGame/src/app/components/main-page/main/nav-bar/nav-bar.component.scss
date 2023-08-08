@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@600&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
+
+.navbar {
+  background-color: #DB6B18;
+  width: 100%;
+  height: auto;
+}
+
+.game-logo {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  height: 60px;
+}
+
+.game-icon {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.game-title {
+  font-family: 'Edu SA Beginner', cursive;
+  color: lime;
+  font-size: 30px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  float: left;
+  font-family: 'Roboto', sans-serif;
+
+  height: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#wisdom {
+  font-family: 'Playfair Display', serif;
+  float: right;
+  color: lime;
+}
+
+a {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: lime;
+  margin: auto;
+}
+
+ul li:not(:first-child, :last-child):active {
+  border-bottom: 5px solid lime;
+}
+
+ul li:last-child {
+  font-size: 25px;
+}
+
+// ul li:not(:first-child, :last-child):hover {
+//   a {
+//     color: aliceblue;
+//   }
+//   background-color:  #DB6B18;
+//   border-radius: 8px;
+//   border-bottom: 5px solid #DB6B18;
+// }

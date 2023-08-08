@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@600&family=Roboto&display=swap');
+#about-me-page {
+  margin: 5% 8%;
+  display: flex;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+//-----------------------------------------------------------
+#main-info {
+  width: 65%;
+  padding-right: 5%;
+}
+
+#education {
+  width: 100%;
+  color: #4A96ED;
+}
+
+h1 {
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+li {
+  list-style-type: none;
+
+}
+
+summary {
+  font-size: 25px;
+  color: #4A96ED;
+}
+
+details {
+  display: block;
+}
+
+details p {
+  font-size: 20px;
+  color: #4A96ED;
+}
+
+p {
+  position: relative;
+  padding-left: 20px; /* Adjust as needed */
+}
+
+p::before {
+  content: "\2022"; /* Unicode bullet point character */
+  position: absolute;
+  left: 0;
+  top: 0.2em; /* Adjust vertical alignment */
+  color: #333; /* Adjust color if needed */
+}
+
+//------------------------------------------------------------
+#experience {
+
+}
+
+//------------------------------------------------------------
+#extra-curricular-activities {
+  color: #4A96ED;
+}
+
+//------------------------------------------------------------
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+}
+
+#my-image {
+  width: 35%;
+  height: 48vh;
+  display: flex;
+  justify-content: center;
+}
+
+#image-holder {
+  // width: 100%;
+  height: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 30px;
+  border: 3px solid limegreen;
+}
+
+
+//----------------------------------------------------------------------------------------------
+//Responsive design
+@media screen and (max-width: 768px) {
+  #about-me-page {
+    flex-direction: column-reverse;
+  }
+
+  #my-image {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #main-info {
+    padding: 0;
+  }
+}
+
