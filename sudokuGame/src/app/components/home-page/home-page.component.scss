@@ -26,7 +26,13 @@
   border: 5px solid #148F10;
   border-radius: 20px;
   // margin-right: 20px;
+
+  // transition: transform .2s;
 }
+
+// :where(.solve-maze, .new-maze) :hover {
+//   transform: scale(120%);
+// }
 
 .image {
   width: 100%;
@@ -51,6 +57,8 @@
   background-color: #8F4A17;
   font-family: 'Roboto', sans-serif;
   font-weight: lighter;
+
+  transition: transform .2s;
 }
 
 .button-holder button:hover {
@@ -58,6 +66,8 @@
   color: lime;
   font-weight: 500;
   background-color: #5C44DB;
+
+  transform: scale(1.25);
 }
 //Contact-----------------------------------------------------------------------------------------
 #contact-block {
@@ -100,6 +110,12 @@
 
 #sm-icon {
   margin: 5px;
+
+  transition: transform 0.25s;
+}
+
+#sm-icon:hover {
+  transform: scale(1.25);
 }
 
 #social-media-element {

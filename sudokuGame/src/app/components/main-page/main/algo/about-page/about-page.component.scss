@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@600&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap'); //font-style for game introduction
+
 #about-me-page {
   margin: 5% 8%;
   display: flex;
 }
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 //-----------------------------------------------------------
@@ -21,7 +22,7 @@
 
 h1 {
   color: white;
-  font-family: 'Roboto', sans-serif;
+  text-shadow: 3px 3px gray;
 }
 
 li {
@@ -29,18 +30,27 @@ li {
 
 }
 
-summary {
-  font-size: 25px;
-  color: #4A96ED;
-}
-
 details {
   display: block;
 }
 
+details summary {
+  font-size: 25px;
+  color: #4A96ED;
+
+  transition: font-weight color 2s;
+}
+
+details summary:hover {
+  font-weight:bold;
+  color: #D1ED32;
+}
+
+
 details p {
   font-size: 20px;
   color: #4A96ED;
+  font-style: italic;
 }
 
 p {
@@ -53,7 +63,7 @@ p::before {
   position: absolute;
   left: 0;
   top: 0.2em; /* Adjust vertical alignment */
-  color: #333; /* Adjust color if needed */
+  color: white; /* Adjust color if needed */
 }
 
 //------------------------------------------------------------
@@ -67,6 +77,15 @@ p::before {
 }
 
 //------------------------------------------------------------
+//My avatar
+@keyframes example {
+  0%   {border-color: limegreen;}
+  25%  {border-color: #CC691D;}
+  50%  {border-color: #553ACF;}
+  75% {border-color: blueviolet;}
+  100% {border-color: #804518;}
+}
+
 .image {
   width: 100%;
   height: 100%;
@@ -85,7 +104,9 @@ p::before {
   height: 100%;
   aspect-ratio: 3/4;
   border-radius: 30px;
-  border: 3px solid limegreen;
+  border: 4px solid limegreen;
+
+  animation: example 5s infinite;
 }
 
 
