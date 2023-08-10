@@ -15,9 +15,23 @@ interface Person {
 export class HomePageComponent {
   signalSolve: boolean = true;
   signalPlay: boolean = false;
+  quote_author: string = "";
+  quote_text: string = "";
+
+  getRandomInt(max: number): number {
+    return Math.floor(Math.random() * max);
+  }
 
   constructor(private shareService: ShareService) {
-
+    //Fetch API from JSON Quotes API
+    fetch("https://type.fit/api/quotes")
+    .then(function(response) {
+      return response.json();
+    })
+    .then((data) => {
+      this.quote_author = data[this.getRandomInt(data.length-1)].author;
+      this.quote_text = data[this.getRandomInt(data.length-1)].text;
+    });
   }
 
   generateQuotes() {

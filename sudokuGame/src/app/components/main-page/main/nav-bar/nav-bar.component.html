@@ -6,14 +6,10 @@
         <p class="game-title">Sudoku</p>
       </div>
     </li>
-    <!--routerLink="main-page"-->
     <li id="solve"><a routerLink="solveMaze" routerLinkActive="active" (click)="sendTingleSolve()">Solve Your Maze</a></li>
     <li id="play"><a routerLink="playMaze" (click)="sendTinglePlay()">Play with new Maze here</a></li>
     <li id="about"><a routerLink="aboutme" (click)="sendTingleAbout()">About me</a></li>
 
-    <li id="wisdom">
-      <div class="quote-text">{{quote_text}}</div>
-      <!-- <div class="quote-author">{{quote_author}}</div> -->
-    </li>
+    <li class="icon"><a href="javascript:void(0);" onclick="myFunction()"><mat-icon>list</mat-icon></a></li>
   </ul>
 </div>
