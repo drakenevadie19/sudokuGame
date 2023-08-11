@@ -34,7 +34,7 @@
 }
 
 .solve-maze, .new-maze {
-  width: 38vw;
+  width: 35vw;
   // height: 60vh;
 
   aspect-ratio: 1/1;
@@ -190,8 +190,8 @@
 
   .quote-text {
     position: relative;
-    top: 0;
-    left: 5%;
+    top: 10px;
+    left: 50%;
   }
 
   .solve-maze, .new-maze {

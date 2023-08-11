@@ -9,19 +9,21 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-// As you remove the space you cannot put <mat-hint>hint</mat-hint> or <mat-error>error</mat-error> properly. Error and hint get inside the form-field.
-// mat-form-field {
-//   margin-bottom: -1.25em;
-// }
-
-.solve-page {
+.play-page {
   display: flex;
-  margin: 5% 8%;
+  flex-wrap: wrap;
+  margin: 1.5% 5%;
+
+  gap: 5%;
+}
+
+#maze {
+  width: 50%;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+  grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11% 11%;
 
   padding: 0;
 }
@@ -37,15 +39,14 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 1px;
 }
 
-#maze {
-  margin-right: 5%;
-}
-
 //----------------------------------------------------------------------------------
 //Button Place
 .direction {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+
+  width: 45%;
 }
 
 //Timer -----------------------------
@@ -112,10 +113,9 @@ input[type="number"]::-webkit-outer-spin-button {
 
 //----------------------------------------------------------------------------------------------
 //Responsive design
-@media screen and (max-width: 768px) {
-  .solve-page {
+@media screen and (max-width: 798px) {
+  .play-page {
     flex-direction: column;
-    // width: 100%;
     justify-content: center;
   }
 

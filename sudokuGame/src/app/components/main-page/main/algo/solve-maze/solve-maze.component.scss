@@ -16,20 +16,20 @@ input[type="number"]::-webkit-outer-spin-button {
 .solve-page {
   display: flex;
   flex-wrap: wrap;
-  margin: 5% 8%;
+  margin: 1.5% 5%;
+
+  gap: 5%;
+}
+
+#maze {
+  width: 50%;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+  grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11% 11%;
 
   padding: 0;
-  // width: 540px;
-
-  // gap: 5px;
-
-  // row-gap: 10px;
-  // column-gap: 10px;
 }
 
 .grid-item {
@@ -43,9 +43,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 1px;
 }
 
-#maze {
-  margin-right: 5%;
-}
 
 //----------------------------------------------------------------------------------
 //Button Place
@@ -83,13 +80,17 @@ input[type="number"]::-webkit-outer-spin-button {
   display: none;
 }
 
+//-----------------------------------------------------------------
+//Direction
 .direction {
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  width: 45%;
 }
 
-.direction > h2 {
+.direction > h3 {
   color: white;
   font-family: 'Roboto', sans-serif;
 }
@@ -112,9 +113,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 //----------------------------------------------------------------------------------------------
 //Responsive design
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 798px) {
   .solve-page {
     flex-direction: column;
+    justify-content: center;
   }
 
   #maze {
@@ -123,7 +125,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
   .direction {
     width: 100%;
-    // flex-direction: column-reverse;
+    justify-content: center;
   }
 }
 
