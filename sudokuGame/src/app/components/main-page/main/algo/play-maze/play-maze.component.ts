@@ -11,6 +11,8 @@ import { MazeSquare } from './MazeSquare';
 
 export class PlayMazeComponent {
   mazeList : MazeSquare[][] ;
+  path: [number, number, number][] = [];
+
   soluong:number = 9;
   // isDisabled: boolean = false;
   input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
@@ -287,4 +289,128 @@ export class PlayMazeComponent {
   //   }
 
   // }
+  generatePuzzle(): void {
+    this.generateSolution(this.grid);
+    this.printGrid('full solution');
+    this.removeNumbersFromGrid();
+    this.printGrid('with removed numbers');
+  }
+
+  //----------------------------------------------------------------------------------
+//Test cell theo hàng, cột, ô 9
+numUsedInRow(grid: number[][], row: number, number: number): boolean {
+  return grid[row].includes(number);
+}
+
+numUsedInColumn(grid: number[][], col: number, number: number): boolean {
+  for (let i = 0; i < 9; i++) {
+    if (grid[i][col] === number) {
+      return true;
+    }
+  }
+  return false;
+}
+
+numUsedInSubgrid(grid: number[][], row: number, col: number, number: number): boolean {
+  const subRow = Math.floor(row / 3) * 3;
+  const subCol = Math.floor(col / 3) * 3;
+  for (let i = subRow; i < subRow + 3; i++) {
+    for (let j = subCol; j < subCol + 3; j++) {
+      if (grid[i][j] === number) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+//----------------------------------------------------------------------------------
+//Cell với number có valid k?
+validLocation(grid: number[][], row: number, col: number, number: number): boolean {
+  if (this.numUsedInRow(grid, row, number)) {
+    return false;
+  } else if (this.numUsedInColumn(grid, col, number)) {
+    return false;
+  } else if (this.numUsedInSubgrid(grid, row, col, number)) {
+    return false;
+  }
+  return true;
+}
+//----------------------------------------------------------------------------------
+
+findEmptySquare(grid: number[][]): [number, number] | undefined {
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (grid[i][j] === 0) {
+        return [i, j];
+      }
+    }
+  }
+}
+
+
+
+generateSolution(grid: number[][]): boolean {
+  const numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  for (let i = 0; i < 81; i++) {
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    if (grid[row][col] === 0) {
+      shuffle(numberList);
+      for (const number of numberList) {
+        if (this.validLocation(grid, row, col, number)) {
+          this.path.push([number, row, col]);
+          grid[row][col] = number;
+          const emptySquare = this.findEmptySquare(grid);
+          if (!emptySquare) {
+            return true;
+          } else {
+            if (this.generateSolution(grid)) {
+              return true;
+            }
+          }
+        }
+      }
+      break;
+    }
+  }
+  const [row, col] = this.findEmptySquare(grid) || [0, 0];
+  grid[row][col] = 0;
+  return false;
+}
+
+getNonEmptySquares(grid: number[][]): [number, number][] {
+  const nonEmptySquares: [number, number][] = [];
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid.length; j++) {
+      if (grid[i][j] !== 0) {
+        nonEmptySquares.push([i, j]);
+      }
+    }
+  }
+  shuffle(nonEmptySquares);
+  return nonEmptySquares;
+}
+
+removeNumbersFromGrid(): void {
+  const nonEmptySquares = this.getNonEmptySquares(this.grid);
+  let nonEmptySquaresCount = nonEmptySquares.length;
+  let rounds = 3;
+  while (rounds > 0 && nonEmptySquaresCount >= 17) {
+    const [row, col] = nonEmptySquares.pop() || [0, 0];
+    nonEmptySquaresCount--;
+    const removedSquare = this.grid[row][col];
+    this.grid[row][col] = 0;
+    const gridCopy = cloneDeep(this.grid);
+    this.counter = 0;
+    this.solvePuzzle(gridCopy);
+    if (this.counter !== 1) {
+      this.grid[row][col] = removedSquare;
+      nonEmptySquaresCount++;
+      rounds--;
+    }
+  }
+}
+
+
 }
