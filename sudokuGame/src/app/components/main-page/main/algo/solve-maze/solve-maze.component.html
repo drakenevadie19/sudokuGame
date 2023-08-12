@@ -25,16 +25,16 @@
       </button>
 
       <button mat-raised-button color="primary" (click)="printMaze()" class="solveButton">
-        <span>Print Status</span>
+        <span>Print Status <strong>(For Test)</strong></span>
       </button>
 
       <button mat-raised-button color="primary" (click)="fillMatrix()" class="solveButton">
-        <span>Fill in The maze</span>
+        <span>Fill in The maze <strong>(For Test)</strong></span>
       </button>
     </div>
-    <mat-form-field class="example-full-width">
+    <!-- <mat-form-field class="example-full-width">
       <textarea matInput class="input-area" [(ngModel)]="input"></textarea>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <div id="notifiCation">
       <p *ngIf="isSolve && canBesolve" style="color: lime;">The Maze is solved successfully</p>

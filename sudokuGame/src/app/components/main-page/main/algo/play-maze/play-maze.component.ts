@@ -10,8 +10,7 @@ import { MazeSquare } from './MazeSquare';
 })
 
 export class PlayMazeComponent {
-  mazeList : MazeSquare[][] ;
-  path: [number, number, number][] = [];
+  mazeList : MazeSquare[][];
 
   soluong:number = 9;
   // isDisabled: boolean = false;
@@ -277,140 +276,164 @@ export class PlayMazeComponent {
   }
 
   //------------------------------------------------------------------
-  solution_array: number[][] = [];
-  // generate_solution() {
-  //   let number_list = [1,2,3,4,5,6,7,8,9];
-  //   for (let i=0;i<9;i++) {
-  //     for (let j=0;j<9;j++) {
-  //       if (this.mazeList[i][j] == "") {
+  chuot_bach_array: number[][] = [];
+  counter: number = 0;
+  path: [number, number, number][] = [];
 
-  //       }
-  // //     }
-  //   }
-
-  // }
   generatePuzzle(): void {
-    this.generateSolution(this.grid);
+    this.chuot_bach_array = [];
+    for (let i=0;i<9;i++) {
+      this.chuot_bach_array[i] = [];
+      for (let j=0;j<9;j++) {
+        this.chuot_bach_array[i][j] = 0;
+      }
+    }
+
+    this.printGrid('empty');
+    this.generateSolution(this.chuot_bach_array);
     this.printGrid('full solution');
-    this.removeNumbersFromGrid();
-    this.printGrid('with removed numbers');
+    // this.removeNumbersFromGrid();
+    // this.printGrid('with removed numbers');
   }
 
-  //----------------------------------------------------------------------------------
-//Test cell theo hàng, cột, ô 9
-numUsedInRow(grid: number[][], row: number, number: number): boolean {
-  return grid[row].includes(number);
-}
-
-numUsedInColumn(grid: number[][], col: number, number: number): boolean {
-  for (let i = 0; i < 9; i++) {
-    if (grid[i][col] === number) {
-      return true;
+  //Print the maze at current status
+  printGrid(gridName?: string): void {
+    if (gridName) {
+      console.log(gridName);
     }
+    this.chuot_bach_array.forEach(row => console.log(row));
   }
-  return false;
-}
 
-numUsedInSubgrid(grid: number[][], row: number, col: number, number: number): boolean {
-  const subRow = Math.floor(row / 3) * 3;
-  const subCol = Math.floor(col / 3) * 3;
-  for (let i = subRow; i < subRow + 3; i++) {
-    for (let j = subCol; j < subCol + 3; j++) {
-      if (grid[i][j] === number) {
-        return true;
-      }
+  //---------------------------------------------------------------------------
+  //Step 1: Generate a maze
+  shuffle(array: any[]): number[] {
+    for (let i = array.length - 1;i>0;i--) {
+        const j = Math.floor(Math.random() * (i+1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-  }
-  return false;
-}
+    return array;
+  };
 
-//----------------------------------------------------------------------------------
-//Cell với number có valid k?
-validLocation(grid: number[][], row: number, col: number, number: number): boolean {
-  if (this.numUsedInRow(grid, row, number)) {
-    return false;
-  } else if (this.numUsedInColumn(grid, col, number)) {
-    return false;
-  } else if (this.numUsedInSubgrid(grid, row, col, number)) {
-    return false;
-  }
-  return true;
-}
-//----------------------------------------------------------------------------------
+  generateSolution(chuot_bach_array: number[][]): boolean {
+    let numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    for (let i = 0; i < 81; i++) {
+      const row = Math.floor(i / 9);
+      const col = i % 9;
+      if (chuot_bach_array[row][col] === 0) {
+        //Shuffle the maze to get a random number
+        numberList = this.shuffle(numberList);
+        for (const number of numberList) {
+          if (this.validLocation(chuot_bach_array, row, col, number)) {
+            this.path.push([number, row, col]);
+            chuot_bach_array[row][col] = number;
 
-findEmptySquare(grid: number[][]): [number, number] | undefined {
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      if (grid[i][j] === 0) {
-        return [i, j];
-      }
-    }
-  }
-}
-
-
-
-generateSolution(grid: number[][]): boolean {
-  const numberList = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  for (let i = 0; i < 81; i++) {
-    const row = Math.floor(i / 9);
-    const col = i % 9;
-    if (grid[row][col] === 0) {
-      shuffle(numberList);
-      for (const number of numberList) {
-        if (this.validLocation(grid, row, col, number)) {
-          this.path.push([number, row, col]);
-          grid[row][col] = number;
-          const emptySquare = this.findEmptySquare(grid);
-          if (!emptySquare) {
-            return true;
-          } else {
-            if (this.generateSolution(grid)) {
+            const emptySquare: number[] = this.findEmptySquare(chuot_bach_array);
+            if (emptySquare.length == 0) {
               return true;
+            } else {
+              if (this.generateSolution(chuot_bach_array)) {
+                return true;
+              }
             }
           }
         }
-      }
-      break;
-    }
-  }
-  const [row, col] = this.findEmptySquare(grid) || [0, 0];
-  grid[row][col] = 0;
-  return false;
-}
-
-getNonEmptySquares(grid: number[][]): [number, number][] {
-  const nonEmptySquares: [number, number][] = [];
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid.length; j++) {
-      if (grid[i][j] !== 0) {
-        nonEmptySquares.push([i, j]);
+        break;
       }
     }
+    var result: number[] = [];
+    result = this.findEmptySquare(chuot_bach_array).length != 0 ? this.findEmptySquare(chuot_bach_array) : [0,0];
+    chuot_bach_array[result[0]][result[1]] = 0;
+    return false;
   }
-  shuffle(nonEmptySquares);
-  return nonEmptySquares;
-}
 
-removeNumbersFromGrid(): void {
-  const nonEmptySquares = this.getNonEmptySquares(this.grid);
-  let nonEmptySquaresCount = nonEmptySquares.length;
-  let rounds = 3;
-  while (rounds > 0 && nonEmptySquaresCount >= 17) {
-    const [row, col] = nonEmptySquares.pop() || [0, 0];
-    nonEmptySquaresCount--;
-    const removedSquare = this.grid[row][col];
-    this.grid[row][col] = 0;
-    const gridCopy = cloneDeep(this.grid);
-    this.counter = 0;
-    this.solvePuzzle(gridCopy);
-    if (this.counter !== 1) {
-      this.grid[row][col] = removedSquare;
-      nonEmptySquaresCount++;
-      rounds--;
+  //----------------------------------------------------------------------------------
+  //Check whether the solution is valid?
+  validLocation(chuot_bach_array: number[][], row: number, col: number, number: number): boolean {
+    if (this.numUsedInRow(chuot_bach_array, row, number)) {
+      return false;
+    } else if (this.numUsedInColumn(chuot_bach_array, col, number)) {
+      return false;
+    } else if (this.numUsedInSubgrid(chuot_bach_array, row, col, number)) {
+      return false;
     }
+    return true;
   }
-}
 
+  //Test cell in row
+  numUsedInRow(chuot_bach_array: number[][], row: number, number: number): boolean {
+    return chuot_bach_array[row].includes(number);
+  }
 
+  //Test cell in column
+  numUsedInColumn(chuot_bach_array: number[][], col: number, number: number): boolean {
+    for (let i = 0; i < 9; i++) {
+      if (chuot_bach_array[i][col] === number) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  //Test cell in 3x3 div
+  numUsedInSubgrid(chuot_bach_array: number[][], row: number, col: number, number: number): boolean {
+    const subRow = Math.floor(row / 3) * 3;
+    const subCol = Math.floor(col / 3) * 3;
+    for (let i = subRow; i < subRow + 3; i++) {
+      for (let j = subCol; j < subCol + 3; j++) {
+        if (chuot_bach_array[i][j] === number) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  //Looking for remained cells
+  findEmptySquare(chuot_bach_array: number[][]): number[] {
+    let result: number[] = [];
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if (chuot_bach_array[i][j] === 0) {
+          result.push(i);
+          result.push(j)
+          return result;
+        }
+      }
+    }
+    return result;
+  }
+
+// //----------------------------------------------------------------------------------
+// getNonEmptySquares(grid: number[][]): [number, number][] {
+//   const nonEmptySquares: [number, number][] = [];
+//   for (let i = 0; i < grid.length; i++) {
+//     for (let j = 0; j < grid.length; j++) {
+//       if (grid[i][j] !== 0) {
+//         nonEmptySquares.push([i, j]);
+//       }
+//     }
+//   }
+//   shuffle(nonEmptySquares);
+//   return nonEmptySquares;
+// }
+
+// removeNumbersFromGrid(): void {
+//   const nonEmptySquares = this.getNonEmptySquares(this.grid);
+//   let nonEmptySquaresCount = nonEmptySquares.length;
+//   let rounds = 3;
+//   while (rounds > 0 && nonEmptySquaresCount >= 17) {
+//     const [row, col] = nonEmptySquares.pop() || [0, 0];
+//     nonEmptySquaresCount--;
+//     const removedSquare = this.grid[row][col];
+//     this.grid[row][col] = 0;
+//     const gridCopy = cloneDeep(this.grid);
+//     this.counter = 0;
+//     this.solvePuzzle(gridCopy);
+//     if (this.counter !== 1) {
+//       this.grid[row][col] = removedSquare;
+//       nonEmptySquaresCount++;
+//       rounds--;
+//     }
+//   }
+// }
 }
