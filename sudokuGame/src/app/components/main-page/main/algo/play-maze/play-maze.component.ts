@@ -2,6 +2,15 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { MazeSquare } from './MazeSquare';
 
+class Coordinate {
+  row: number;
+  column: number;
+
+  constructor(row: number, column: number) {
+    this.row = row;
+    this.column = column;
+  }
+}
 
 @Component({
   selector: 'app-play-maze',
@@ -280,7 +289,18 @@ export class PlayMazeComponent {
   counter: number = 0;
   path: [number, number, number][] = [];
 
-  generatePuzzle(): void {
+  mazeValid(): boolean {
+    for(let i=0;i<9;i++) {
+      for(let j=0;j<9;j++) {
+        if (this.chuot_bach_array[i][j] == 0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  emptyMaze(): void {
     this.chuot_bach_array = [];
     for (let i=0;i<9;i++) {
       this.chuot_bach_array[i] = [];
@@ -288,12 +308,18 @@ export class PlayMazeComponent {
         this.chuot_bach_array[i][j] = 0;
       }
     }
+  }
 
+  generatePuzzle(): void {
+    this.emptyMaze();
     this.printGrid('empty');
-    this.generateSolution(this.chuot_bach_array);
+    while (!this.mazeValid()) {
+      this.emptyMaze();
+      this.generateSolution(this.chuot_bach_array);
+    }
     this.printGrid('full solution');
-    // this.removeNumbersFromGrid();
-    // this.printGrid('with removed numbers');
+    this.removeNumbersFromGrid();
+    this.printGrid('with removed numbers');
   }
 
   //Print the maze at current status
@@ -306,7 +332,7 @@ export class PlayMazeComponent {
 
   //---------------------------------------------------------------------------
   //Step 1: Generate a maze
-  shuffle(array: any[]): number[] {
+  shuffle(array: any[]): any[] {
     for (let i = array.length - 1;i>0;i--) {
         const j = Math.floor(Math.random() * (i+1));
         [array[i], array[j]] = [array[j], array[i]];
@@ -404,36 +430,77 @@ export class PlayMazeComponent {
   }
 
 // //----------------------------------------------------------------------------------
-// getNonEmptySquares(grid: number[][]): [number, number][] {
-//   const nonEmptySquares: [number, number][] = [];
-//   for (let i = 0; i < grid.length; i++) {
-//     for (let j = 0; j < grid.length; j++) {
-//       if (grid[i][j] !== 0) {
-//         nonEmptySquares.push([i, j]);
-//       }
-//     }
-//   }
-//   shuffle(nonEmptySquares);
-//   return nonEmptySquares;
-// }
+getNonEmptySquares(grid: number[][]): Coordinate[] {
+  let nonEmptySquares: Coordinate[] = [];
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid.length; j++) {
+      if (grid[i][j] !== 0) {
+        let x = new Coordinate(i, j);
+        nonEmptySquares.push(x);
+      }
+    }
+  }
+  nonEmptySquares = this.shuffle(nonEmptySquares);
+  return nonEmptySquares;
+}
 
-// removeNumbersFromGrid(): void {
-//   const nonEmptySquares = this.getNonEmptySquares(this.grid);
-//   let nonEmptySquaresCount = nonEmptySquares.length;
-//   let rounds = 3;
-//   while (rounds > 0 && nonEmptySquaresCount >= 17) {
-//     const [row, col] = nonEmptySquares.pop() || [0, 0];
-//     nonEmptySquaresCount--;
-//     const removedSquare = this.grid[row][col];
-//     this.grid[row][col] = 0;
-//     const gridCopy = cloneDeep(this.grid);
-//     this.counter = 0;
-//     this.solvePuzzle(gridCopy);
-//     if (this.counter !== 1) {
-//       this.grid[row][col] = removedSquare;
-//       nonEmptySquaresCount++;
-//       rounds--;
-//     }
-//   }
-// }
+cloneDeep(chuot_bach_array: number[][]): number[][] {
+  let chuotbackCopy: number[][] = [];
+  for (let i=0;i<9;i++) {
+    chuotbackCopy[i] = [];
+    for (let j=0;j<9;j++) {
+      chuotbackCopy[i][j] = this.chuot_bach_array[i][j];
+    }
+  }
+  return chuotbackCopy;
+}
+
+solvePuzzle(grid: number[][]): boolean {
+  for (let i = 0; i < 81; i++) {
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    if (grid[row][col] === 0) {
+      for (let number = 1; number <= 9; number++) {
+        if (this.validLocation(grid, row, col, number)) {
+          grid[row][col] = number;
+          const emptySquare = this.findEmptySquare(grid);
+          if (!emptySquare) {
+            this.counter++;
+            break;
+          } else {
+            if (this.solvePuzzle(grid)) {
+              return true;
+            }
+          }
+        }
+      }
+      break;
+    }
+  }
+  var result: number[] = [];
+  result = this.findEmptySquare(this.chuot_bach_array).length != 0 ? this.findEmptySquare(this.chuot_bach_array) : [0,0];
+  this.chuot_bach_array[result[0]][result[1]] = 0;
+  return false;
+}
+
+removeNumbersFromGrid(): void {
+  const nonEmptySquares = this.getNonEmptySquares(this.chuot_bach_array);
+  let nonEmptySquaresCount = nonEmptySquares.length;
+  let rounds = 3;
+  while (rounds > 0 && nonEmptySquaresCount >= 17) {
+    const x = nonEmptySquares.pop() || new Coordinate(0,0);
+    nonEmptySquaresCount--;
+    const removedSquare = this.chuot_bach_array[x.row][x.column];
+    this.chuot_bach_array[x.row][x.column] = 0;
+    const gridCopy = this.cloneDeep(this.chuot_bach_array);
+    this.counter = 0;
+    this.solvePuzzle(gridCopy);
+    if (this.counter !== 1) {
+      this.chuot_bach_array[x.row][x.column] = removedSquare;
+      nonEmptySquaresCount++;
+      rounds--;
+    }
+  }
+}
+
 }
