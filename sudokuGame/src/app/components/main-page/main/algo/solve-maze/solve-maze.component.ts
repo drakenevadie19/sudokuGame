@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ShareService } from 'src/app/share.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,12 +12,12 @@ export class SolveMazeComponent {
   mazeList : any[][];
   soluong:number = 9;
   isDisabled: boolean = false;
-  input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
-  x: String[] = [];
+  // input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
+  // x: String[] = [];
   canBesolve: boolean = true;
   isSolve: boolean = false;
 
-  constructor() {
+  constructor(private shareService: ShareService) {
     this.mazeList = [];
 
     // Define specific number of elements in each row
@@ -30,22 +31,16 @@ export class SolveMazeComponent {
     }
 
     console.log(this.mazeList);
-    // console.log(this.input);
   }
 
   fillMatrix() {
-    // Define specific number of elements in each row
-    const elementsInEachRow = this.soluong;
-    // Initialize the array with certain number of rows
-    const numRows = this.soluong;
-
-    this.x = this.input.trim().split(',');
-    for (let i = 0; i < numRows; i++) {
-      for (let j = 0; j< elementsInEachRow;j++) {
-        if (this.x[i].charAt(j) == "_") {
+    for (let i = 0; i < 9; i++) {
+      this.mazeList[i] = [];
+      for (let j = 0; j< 9;j++) {
+        if (this.shareService.maze[i][j] == 0) {
           this.mazeList[i][j] = "";
         } else {
-          this.mazeList[i][j] = parseInt(this.x[i].charAt(j));
+          this.mazeList[i][j] = this.shareService.maze[i][j];
         }
       }
     }

@@ -23,4 +23,23 @@ export class ShareService {
     console.log("This is play Maze");
     this.playSignal.subscribe(console.log);
   }
+
+  //--------------------------------
+  //For testing
+  public maze: number[][] = [];
+
+  updateMaze(array: number[][], maze: number[][]) {
+    for (let i=0;i<9;i++) {
+      this.maze[i] = [];
+      for (let j=0;j<9;j++) {
+        this.maze[i][j] = 0;
+      }
+    }
+
+    for (let i=0;i<9;i++) {
+      for (let j=0;j<9;j++) {
+        maze[i][j] = array[i][j];
+      }
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { MazeSquare } from './MazeSquare';
+import { ShareService } from 'src/app/share.service';
 
 class Coordinate {
   row: number;
@@ -42,7 +43,7 @@ export class PlayMazeComponent {
 
   checkButtonDisable: boolean= false;
 
-  constructor() {
+  constructor(private shareService: ShareService) {
     this.mazeList = [];
     for (let i=0;i<9;i++) {
       this.mazeList[i] = [];
@@ -52,6 +53,7 @@ export class PlayMazeComponent {
     }
 
     console.log(this.mazeList);
+    this.shareService.maze = [];
   }
 
   //-------------------------------------------------------------------
@@ -167,6 +169,7 @@ export class PlayMazeComponent {
   //To fill the maze into the matrix
   fillMatrix() {
     this.mazeReady = true;
+    this.generatePuzzle();
     // Define specific number of elements in each row
     const elementsInEachRow = this.soluong;
     // Initialize the array with certain number of rows
@@ -175,11 +178,11 @@ export class PlayMazeComponent {
     this.x = this.input.trim().split(',');
     for (let i = 0; i < numRows; i++) {
       for (let j = 0; j< elementsInEachRow;j++) {
-        if (this.x[i].charAt(j) == "_") {
+        if (this.chuot_bach_array[i][j] == 0) {
           this.mazeList[i][j].value = "";
           this.mazeList[i][j].isDisable = false;
         } else {
-          this.mazeList[i][j].value = parseInt(this.x[i].charAt(j));
+          this.mazeList[i][j].value = this.chuot_bach_array[i][j];
           this.mazeList[i][j].isDisable = true;
         }
       }
@@ -267,19 +270,12 @@ export class PlayMazeComponent {
 
   //----------------------------------------------------------------
   //Add solution for testing
-  solution: string = "579638124,128459376,643712895,385974261,467321958,291865743,854293617,732146589,916587432";
+  solution:number[][] = [];
   addSolution() {
-    this.mazeReady = true;
-    this.x = this.solution.trim().split(',');
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j< 9;j++) {
-        if (this.x[i].charAt(j) == "0") {
-          this.mazeList[i][j].value = 0;
-          this.mazeList[i][j].isDisable = false;
-        } else {
-          this.mazeList[i][j].value = parseInt(this.x[i].charAt(j));
-          this.mazeList[i][j].isDisable = true;
-        }
+        this.mazeList[i][j].value = this.solution[i][j];
+        this.mazeList[i][j].isDisable = true;
       }
     }
   }
@@ -317,9 +313,14 @@ export class PlayMazeComponent {
       this.emptyMaze();
       this.generateSolution(this.chuot_bach_array);
     }
+    this.solution = this.cloneDeep(this.chuot_bach_array);
     this.printGrid('full solution');
     this.removeNumbersFromGrid();
     this.printGrid('with removed numbers');
+
+    this.shareService.updateMaze(this.chuot_bach_array, this.shareService.maze);
+    console.log("Maze của ShareService");
+    console.log(this.shareService.maze);
   }
 
   //Print the maze at current status
@@ -430,77 +431,85 @@ export class PlayMazeComponent {
   }
 
 // //----------------------------------------------------------------------------------
-getNonEmptySquares(grid: number[][]): Coordinate[] {
-  let nonEmptySquares: Coordinate[] = [];
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid.length; j++) {
-      if (grid[i][j] !== 0) {
-        let x = new Coordinate(i, j);
-        nonEmptySquares.push(x);
+  getNonEmptySquares(chuot_bach_array: number[][]): Coordinate[] {
+    let nonEmptySquares: Coordinate[] = [];
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        if (chuot_bach_array[i][j] !== 0) {
+          let x = new Coordinate(i, j);
+          nonEmptySquares.push(x);
+        }
       }
     }
+    nonEmptySquares = this.shuffle(nonEmptySquares);
+    return nonEmptySquares;
   }
-  nonEmptySquares = this.shuffle(nonEmptySquares);
-  return nonEmptySquares;
-}
 
-cloneDeep(chuot_bach_array: number[][]): number[][] {
-  let chuotbackCopy: number[][] = [];
-  for (let i=0;i<9;i++) {
-    chuotbackCopy[i] = [];
-    for (let j=0;j<9;j++) {
-      chuotbackCopy[i][j] = this.chuot_bach_array[i][j];
+  cloneDeep(chuot_bach_array: number[][]): number[][] {
+    let chuotbackCopy: number[][] = [];
+    for (let i=0;i<9;i++) {
+      chuotbackCopy[i] = [];
+      for (let j=0;j<9;j++) {
+        chuotbackCopy[i][j] = this.chuot_bach_array[i][j];
+      }
     }
+    return chuotbackCopy;
   }
-  return chuotbackCopy;
-}
 
-solvePuzzle(grid: number[][]): boolean {
-  for (let i = 0; i < 81; i++) {
-    const row = Math.floor(i / 9);
-    const col = i % 9;
-    if (grid[row][col] === 0) {
-      for (let number = 1; number <= 9; number++) {
-        if (this.validLocation(grid, row, col, number)) {
-          grid[row][col] = number;
-          const emptySquare = this.findEmptySquare(grid);
-          if (!emptySquare) {
-            this.counter++;
-            break;
-          } else {
-            if (this.solvePuzzle(grid)) {
-              return true;
+  solvePuzzle(grid: number[][]): boolean {
+    for (let i = 0; i < 81; i++) {
+      const row = Math.floor(i / 9);
+      const col = i % 9;
+      if (grid[row][col] === 0) {
+        for (let number = 1; number <= 9; number++) {
+          if (this.validLocation(grid, row, col, number)) {
+            grid[row][col] = number;
+            const emptySquare = this.findEmptySquare(grid);
+            if (emptySquare.length == 0) {
+              this.counter++;
+              break;
+            } else {
+              if (this.solvePuzzle(grid)) {
+                return true;
+              }
             }
           }
         }
+        break;
       }
-      break;
     }
+    var result: number[] = [];
+    result = this.findEmptySquare(this.chuot_bach_array).length != 0 ? this.findEmptySquare(this.chuot_bach_array) : [0,0];
+    this.chuot_bach_array[result[0]][result[1]] = 0;
+    return false;
   }
-  var result: number[] = [];
-  result = this.findEmptySquare(this.chuot_bach_array).length != 0 ? this.findEmptySquare(this.chuot_bach_array) : [0,0];
-  this.chuot_bach_array[result[0]][result[1]] = 0;
-  return false;
-}
 
-removeNumbersFromGrid(): void {
-  const nonEmptySquares = this.getNonEmptySquares(this.chuot_bach_array);
-  let nonEmptySquaresCount = nonEmptySquares.length;
-  let rounds = 3;
-  while (rounds > 0 && nonEmptySquaresCount >= 17) {
-    const x = nonEmptySquares.pop() || new Coordinate(0,0);
-    nonEmptySquaresCount--;
-    const removedSquare = this.chuot_bach_array[x.row][x.column];
-    this.chuot_bach_array[x.row][x.column] = 0;
-    const gridCopy = this.cloneDeep(this.chuot_bach_array);
-    this.counter = 0;
-    this.solvePuzzle(gridCopy);
-    if (this.counter !== 1) {
-      this.chuot_bach_array[x.row][x.column] = removedSquare;
-      nonEmptySquaresCount++;
-      rounds--;
+  removeNumbersFromGrid(): void {
+    const nonEmptySquares = this.getNonEmptySquares(this.chuot_bach_array);
+    // console.log(nonEmptySquares);
+    // console.log(typeof(nonEmptySquares[0]))
+    let nonEmptySquaresCount = nonEmptySquares.length;
+    // console.log(nonEmptySquaresCount);
+    console.log(nonEmptySquares.pop())
+    let rounds = 3;
+    let i = 0;
+    while (rounds > 0 && nonEmptySquaresCount >= 17) {
+      const x = nonEmptySquaresCount != 0 ? nonEmptySquares[i] : new Coordinate(0,0);
+      console.log(x.row + " " + x.column);
+      nonEmptySquaresCount--;
+      i++;
+      const removedSquare = this.chuot_bach_array[x.row][x.column];
+      this.chuot_bach_array[x.row][x.column] = 0;
+      const gridCopy = this.cloneDeep(this.chuot_bach_array);
+      this.counter = 0;
+      this.solvePuzzle(gridCopy);
+      if (this.counter !== 1) {
+        this.chuot_bach_array[x.row][x.column] = removedSquare;
+        nonEmptySquaresCount++;
+        rounds--;
+      }
+      console.log(this.chuot_bach_array);
     }
   }
-}
 
 }
