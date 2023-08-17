@@ -17,21 +17,14 @@ export class HomePageComponent {
   signalPlay: boolean = false;
   quote_author: string = "";
   quote_text: string = "";
+  loading: boolean = true;
 
   getRandomInt(max: number): number {
     return Math.floor(Math.random() * max);
   }
 
   constructor(private shareService: ShareService) {
-    //Fetch API from JSON Quotes API
-    fetch("https://type.fit/api/quotes")
-    .then(function(response) {
-      return response.json();
-    })
-    .then((data) => {
-      this.quote_author = data[this.getRandomInt(data.length-1)].author;
-      this.quote_text = data[this.getRandomInt(data.length-1)].text;
-    });
+
   }
 
   generateQuotes() {
@@ -46,6 +39,30 @@ export class HomePageComponent {
       this.signalSolve = signal;
     });
     this.shareService.playMaze.subscribe(signal => this.signalPlay = signal);
+
+    this.fetchQuotes();
+  }
+
+  async fetchQuotes() {
+    try {
+      this.loading = true;
+      console.log("loading");
+      //Fetch API from JSON Quotes API
+      fetch("https://type.fit/api/quotes")
+        .then(function(response) {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          this.quote_author = data[this.getRandomInt(data.length-1)].author;
+          this.quote_text = data[this.getRandomInt(data.length-1)].text;
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    } finally {
+      console.log("done loading");
+      this.loading = false;
+    }
   }
 
   sendTingleSolve() {

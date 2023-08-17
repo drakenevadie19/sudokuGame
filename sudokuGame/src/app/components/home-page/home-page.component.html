@@ -1,6 +1,8 @@
 <div class="home-page">
-  <div class="quote-text">{{quote_text}}</div>
   <div class="home-page-main-touch">
+    <div id="loading-container" [style.display]="loading ? 'block' : 'none'">
+    </div>
+    <div class="quote-text" [style.display]="loading ? 'none' : 'block'">{{quote_text}}</div>
     <div class="solve-maze">
       <img src="../../../assets/homepage/solve-maze.jpg" alt="Solve Your Maze here"  class="image">
       <div class="button-holder">

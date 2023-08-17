@@ -23,10 +23,7 @@ export class PlayMazeComponent {
   mazeList : MazeSquare[][];
 
   soluong:number = 9;
-  // isDisabled: boolean = false;
-  input: string = "________4,1____9_7_,__37_28__,____7_26_,4_______8,_91_6____,__42_36__,_3_14___9,9________";
   x: String[] = [];
-  // canBesolve: boolean = true;
   isSolve: boolean = false;
 
   gameStarted: boolean = false;
@@ -170,14 +167,8 @@ export class PlayMazeComponent {
   fillMatrix() {
     this.mazeReady = true;
     this.generatePuzzle();
-    // Define specific number of elements in each row
-    const elementsInEachRow = this.soluong;
-    // Initialize the array with certain number of rows
-    const numRows = this.soluong;
-
-    this.x = this.input.trim().split(',');
-    for (let i = 0; i < numRows; i++) {
-      for (let j = 0; j< elementsInEachRow;j++) {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j< 9;j++) {
         if (this.chuot_bach_array[i][j] == 0) {
           this.mazeList[i][j].value = "";
           this.mazeList[i][j].isDisable = false;
