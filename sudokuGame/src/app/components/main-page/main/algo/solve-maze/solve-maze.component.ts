@@ -34,16 +34,19 @@ export class SolveMazeComponent {
   }
 
   fillMatrix() {
-    for (let i = 0; i < 9; i++) {
-      this.mazeList[i] = [];
-      for (let j = 0; j< 9;j++) {
-        if (this.shareService.maze[i][j] == 0) {
-          this.mazeList[i][j] = "";
-        } else {
-          this.mazeList[i][j] = this.shareService.maze[i][j];
+    if (this.shareService.maze != null) {
+      for (let i = 0; i < 9; i++) {
+        this.mazeList[i] = [];
+        for (let j = 0; j< 9;j++) {
+          if (this.shareService.maze[i][j] == 0) {
+            this.mazeList[i][j] = "";
+          } else {
+            this.mazeList[i][j] = this.shareService.maze[i][j];
+          }
         }
       }
     }
+
   }
 
   clearMaze() {
