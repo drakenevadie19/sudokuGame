@@ -11,13 +11,14 @@
 
   <div class="direction">
     <div class="stop-watch">
+      <h3>Your current Solving time is:</h3>
       <p id="timer">{{ time }}</p>
     </div>
 
     <div class="button-holder">
-      <button mat-raised-button color="primary" [disabled]="isSolve || !mazeReady" (click)="startGame()" class="solveButton" *ngIf="!gameStarted && stopTime">
+      <!-- <button mat-raised-button color="primary" [disabled]="isSolve || !mazeReady" (click)="startGame()" class="solveButton" *ngIf="!gameStarted && stopTime">
         <span>Start</span>
-      </button>
+      </button> -->
       <button mat-raised-button color="primary" [disabled]="isSolve" (click)="pauseGame()" class="solveButton" *ngIf="gameStarted && !stopTime">
         <span>Pause</span>
       </button>

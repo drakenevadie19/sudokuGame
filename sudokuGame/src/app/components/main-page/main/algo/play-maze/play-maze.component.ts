@@ -159,6 +159,12 @@ export class PlayMazeComponent {
         this.mazeList[i][j].isDisable = true;
       }
     }
+
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j< 9;j++) {
+        this.solution[i][j] = 0;
+      }
+    }
     console.clear();
   }
 
@@ -187,6 +193,9 @@ export class PlayMazeComponent {
     }
   }
 
+  checkSmallBox() {
+
+  }
   //-----------------------------------------------------------------
   //Checking isValid?
   checkSolution() {
@@ -238,7 +247,7 @@ export class PlayMazeComponent {
 
       Swal.fire({
         icon: 'error',
-        title: 'Đồ Ngu',
+        title: 'Please try again, I believe you can do it <span>&#9996;</span>',
         showConfirmButton: true,
         timer: 2506
       })
@@ -249,7 +258,7 @@ export class PlayMazeComponent {
         this.stopTime = true;
       }
 
-      let alertMessage = 'Congratulation! You finish the quiz with ' + this.time;
+      let alertMessage = 'Congratulation! You finish the quiz with ' + this.time + ' <span>&#128509;</span>';
       Swal.fire({
         icon: 'success',
         title: alertMessage,

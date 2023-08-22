@@ -50,9 +50,19 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 //Timer -----------------------------
+.stop-watch {
+  gap: 10px;
+}
+
 #timer {
   font-size: 45px;
   line-height: 60px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 300;
+  color: lime;
+}
+
+.stop-watch h3 {
   font-family: 'Orbitron', sans-serif;
   font-weight: 300;
   color: lime;
