@@ -6,6 +6,6 @@ There are 2 parts in this game:
 
 About tech stacks:
   - Programming Languages: TypeScripts, HTML, CSS
-  - Front-end library: Angular
+  - Front-end library: Angular (Ngrx, RxJS, AngularCLI)
   - UI: Bootstrap5, Material UI, SweetAlert 
     
