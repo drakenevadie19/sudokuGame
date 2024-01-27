@@ -6,11 +6,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
-import { MainMazeComponent } from './components/main-page/main/main-maze/main-maze.component';
-import { NavBarComponent } from './components/main-page/main/nav-bar/nav-bar.component';
-import { SolveMazeComponent } from './components/main-page/main/algo/solve-maze/solve-maze.component';
-import { PlayMazeComponent } from './components/main-page/main/algo/play-maze/play-maze.component';
-import { AboutPageComponent } from './components/main-page/main/algo/about-page/about-page.component';
+import { MainMazeComponent } from './components/main-page/main-page-components/main-maze/main-maze.component';
+import { NavBarComponent } from './components/main-page/main-page-components/nav-bar/nav-bar.component';
+import { SolveMazeComponent } from './components/main-page/main-page-components/pages/solve-maze/solve-maze.component';
+import { PlayMazeComponent } from './components/main-page/main-page-components/pages/play-maze/play-maze.component';
+import { AboutPageComponent } from './components/main-page/main-page-components/pages/about-page/about-page.component';
 
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';

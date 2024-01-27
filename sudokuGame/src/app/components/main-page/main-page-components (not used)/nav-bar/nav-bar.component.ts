@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ShareService } from 'src/app/share.service';
 
 
 @Component({
-  selector: 'app-nav-bar',
+  selector: 'main-nav-bar',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
@@ -66,17 +69,15 @@ export class NavBarComponent {
       this.signalSolve = signal;
       if (this.signalSolve) {
         let solveButton = document.getElementById("solve");
-        let playButton = document.getElementById("play");
-        let aboutButton = document.getElementById("about");
-
         console.log(solveButton);
         if (solveButton != null) {
           solveButton.style.borderBottom = '5px solid lime';
         }
+
+        let playButton = document.getElementById("play");
         console.log(playButton);
-        if (playButton != null && aboutButton!= null) {
+        if (playButton != null) {
           playButton.style.borderBottom = 'none';
-          aboutButton.style.borderBottom = 'none';
         }
       }
     });
@@ -90,62 +91,17 @@ export class NavBarComponent {
       this.signalPlay = signal;
       if (this.signalPlay) {
         let playButton = document.getElementById("play");
-        let solveButton = document.getElementById("solve");
-        let aboutButton = document.getElementById("about");
-
         console.log(playButton);
         if (playButton != null) {
           playButton.style.borderBottom = '5px solid lime';
         }
+
+        let solveButton = document.getElementById("solve");
         console.log(solveButton);
-        if (solveButton != null && aboutButton!= null) {
+        if (solveButton != null) {
           solveButton.style.borderBottom = 'none';
-          aboutButton.style.borderBottom = 'none';
         }
       }
     });
-  }
-
-  sendTingleAbout() {
-    this.shareService.changeSolveSignal(false);
-    this.shareService.changePlaySignal(false);
-
-    this.shareService.playSignal.subscribe(signal => {
-      this.signalPlay = signal;
-      // if (this.signalPlay) {
-      //   let playButton = document.getElementById("play");
-      //   let solveButton = document.getElementById("solve");
-
-      //   console.log(playButton);
-      //   if (playButton != null) {
-      //     playButton.style.borderBottom = '5px solid lime';
-      //   }
-      //   console.log(solveButton);
-      //   if (solveButton != null) {
-      //     solveButton.style.borderBottom = 'none';
-      //   }
-      // }
-    });
-    this.shareService.solveSignal.subscribe(signal => {
-      this.signalSolve = signal;
-    })
-    if (this.signalPlay == false && this.signalSolve == false) {
-      let playButton = document.getElementById("play");
-      let solveButton = document.getElementById("solve");
-      let aboutButton = document.getElementById("about");
-
-      console.log(playButton);
-      console.log(solveButton);
-      console.log(aboutButton);
-        if (playButton != null && solveButton != null) {
-          playButton.style.borderBottom = 'none';
-          solveButton.style.borderBottom = 'none';
-        }
-
-        if (aboutButton != null) {
-          aboutButton.style.borderBottom = '5px solid lime';
-        }
-
-    }
   }
 }

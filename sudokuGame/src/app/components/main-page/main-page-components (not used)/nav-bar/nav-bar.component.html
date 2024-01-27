@@ -1,0 +1,19 @@
+<div class="navbar">
+  <ul>
+    <li>
+      <div routerLink="home-page" class="game-logo">
+        <div><img src="../../../assets/sudoku_logo.jpg" alt="" class="game-icon"></div>
+        <p class="game-title">Sudoku</p>
+      </div>
+    </li>
+    <!--routerLink="main-page"-->
+    <li id="solve"><a (click)="sendTingleSolve()">Solve Your Maze</a></li>
+    <li id="play"><a (click)="sendTinglePlay()">Play with new Maze here</a></li>
+    <li><a routerLink="main-page">About me</a></li>
+
+    <li id="wisdom">
+      <div class="quote-text">{{quote_text}}</div>
+      <!-- <div class="quote-author">{{quote_author}}</div> -->
+    </li>
+  </ul>
+</div>

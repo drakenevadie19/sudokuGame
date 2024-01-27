@@ -97,6 +97,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .solveButton {
   margin: 0 10px;
+  // height: ;
+  // font-weight: bold;
 }
 
 .mat-hint {
@@ -123,6 +125,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 //----------------------------------------------------------------------------------------------
 //Responsive design
+// @media screen and (max-width: 1200px) {
+//   .solveButton {
+//     height: max-content;
+//   }
+// }
 @media screen and (max-width: 798px) {
   .play-page {
     flex-direction: column;
@@ -138,5 +145,9 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: column;
     justify-content: center;
   }
+
+  // .solveButton {
+  //   width: max-content;
+  // }
 }
 

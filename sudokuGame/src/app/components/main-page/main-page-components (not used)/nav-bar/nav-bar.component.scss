@@ -44,11 +44,11 @@ li {
   margin-right: 10px;
 }
 
-// #wisdom {
-//   font-family: 'Playfair Display', serif;
-//   float: right;
-//   color: lime;
-// }
+#wisdom {
+  font-family: 'Playfair Display', serif;
+  float: right;
+  color: lime;
+}
 
 a {
   display: block;
@@ -58,36 +58,14 @@ a {
   margin: auto;
 }
 
-// ul li:not(:first-child, :last-child):active {
-//   border-bottom: 5px solid lime;
-// }
-
-ul li:not(:first-child) {
-  transition: transform .2s;
+ul li:not(:first-child, :last-child):active {
+  border-bottom: 5px solid lime;
 }
 
-ul li:not(:first-child):hover {
-  transform: scale(1.25);
-  a {
-    color: #DB6B18;
-
-  }
+ul li:last-child {
+  font-size: 25px;
 }
 
-.icon {
-  display: none;
-}
-
-@media screen and (max-width: 720px) {
-  ul li:not(:first-child, :last-child) {
-    display: none;
-  }
-
-  .icon {
-    display: inline;
-    float: right;
-  }
-}
 // ul li:not(:first-child, :last-child):hover {
 //   a {
 //     color: aliceblue;
@@ -96,4 +74,3 @@ ul li:not(:first-child):hover {
 //   border-radius: 8px;
 //   border-bottom: 5px solid #DB6B18;
 // }
-
