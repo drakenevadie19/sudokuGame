@@ -13,5 +13,6 @@
 - About tech stacks:
   - Programming Languages: TypeScripts, HTML, CSS
   - Front-end library: Angular (Ngrx, RxJS, AngularCLI)
-  - UI additional library: Bootstrap5, Material UI, SweetAlert 
+  - UI additional library: Bootstrap5, Material UI, SweetAlert
+  - Deployment: Vercel.
     
