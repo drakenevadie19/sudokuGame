@@ -19,6 +19,18 @@ export class SolveMazeComponent {
 
   constructor(private shareService: ShareService) {
     this.mazeList = [];
+    this.shareService.maze = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+
 
     // Define specific number of elements in each row
     const elementsInEachRow = this.soluong;
@@ -30,23 +42,35 @@ export class SolveMazeComponent {
       this.mazeList[i] = Array(elementsInEachRow).fill(""); // Replace 0 with the default value you want for each element
     }
 
-    console.log(this.mazeList);
+    // console.log(this.mazeList);
+  }
+
+  ngOnInit() {
+    if (this.shareService.maze) {
+      this.fillMatrix();
+    } else {
+      console.error("Maze data is not available yet.");
+    }
   }
 
   fillMatrix() {
-    if (this.shareService.maze != null) {
+    console.log(this.shareService.maze);
+    if (this.shareService.maze && Array.isArray(this.shareService.maze)) {
       for (let i = 0; i < 9; i++) {
         this.mazeList[i] = [];
-        for (let j = 0; j< 9;j++) {
-          if (this.shareService.maze[i][j] == 0) {
+        for (let j = 0; j < 9; j++) {
+          if (this.shareService.maze[i] && this.shareService.maze[i][j] === 0) {
             this.mazeList[i][j] = "";
-          } else {
+          } else if (this.shareService.maze[i] && this.shareService.maze[i][j] != null) {
             this.mazeList[i][j] = this.shareService.maze[i][j];
+          } else {
+            this.mazeList[i][j] = ""; // Fallback to default value
           }
         }
       }
+    } else {
+      console.error("shareService.maze is not properly initialized.");
     }
-
   }
 
   clearMaze() {
@@ -102,6 +126,7 @@ export class SolveMazeComponent {
     if(c===9 && r === 8) {
       return true;
     }
+
     if(c === 9){
         c = 0;
         r++;
@@ -118,6 +143,7 @@ export class SolveMazeComponent {
         mazeList[r][c] = 0;
       }
     }
+
     return false;
   }
 
@@ -137,6 +163,7 @@ export class SolveMazeComponent {
             if(r1 != r && c1 != c && val == mazeList[r1+start_r][c1+start_c]) return false;
         }
     }
+
     return true;
   }
 }

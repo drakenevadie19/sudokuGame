@@ -21,14 +21,14 @@ export class NavBarComponent {
 
   constructor(private shareService: ShareService) {
     //Fetch API from JSON Quotes API
-    fetch("https://type.fit/api/quotes")
-    .then(function(response) {
-      return response.json();
-    })
-    .then((data) => {
-      this.quote_author = data[this.getRandomInt(data.length-1)].author;
-      this.quote_text = data[this.getRandomInt(data.length-1)].text;
-    });
+    // fetch("https://type.fit/api/quotes")
+    // .then(function(response) {
+    //   return response.json();
+    // })
+    // .then((data) => {
+    //   this.quote_author = data[this.getRandomInt(data.length-1)].author;
+    //   this.quote_text = data[this.getRandomInt(data.length-1)].text;
+    // });
   }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class NavBarComponent {
       this.signalSolve = signal;
       if (this.signalSolve) {
         let solveButton = document.getElementById("solve");
-        console.log(solveButton);
+        // console.log(solveButton);
         if (solveButton != null) {
           solveButton.style.borderBottom = '5px solid lime';
         }
@@ -50,7 +50,7 @@ export class NavBarComponent {
       this.signalPlay = signal;
       if (this.signalPlay) {
         let playButton = document.getElementById("play");
-        console.log(playButton);
+        // console.log(playButton);
         if (playButton != null) {
           playButton.style.borderBottom = '5px solid lime';
         }

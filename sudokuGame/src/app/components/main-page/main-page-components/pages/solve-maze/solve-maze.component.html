@@ -6,10 +6,10 @@
 <div class="solve-page">
   <div id="maze">
     <div class="grid-container" *ngFor="let row of mazeList; let i = index">
-      <mat-form-field class="grid-item" *ngFor="let element of row; let j = index">
-        <input matInput type="number" max="9" min="1" class="grid-input" [(ngModel)]="mazeList[i][j]" [disabled]="isDisabled">
+      <form class="grid-form" *ngFor="let element of row; let j = index">
+        <input matInput type="number" max="9" min="1" class="grid-item" [(ngModel)]="mazeList[i][j]" [ngModelOptions]="{standalone:true}" [disabled]="isDisabled">
         <!-- <mat-hint>E</mat-hint> -->
-      </mat-form-field>
+      </form>
     </div>
   </div>
 
