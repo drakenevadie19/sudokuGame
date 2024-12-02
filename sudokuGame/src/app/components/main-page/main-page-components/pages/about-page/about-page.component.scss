@@ -67,9 +67,9 @@ p::before {
 }
 
 //------------------------------------------------------------
-#experience {
+// #experience {
 
-}
+// }
 
 //------------------------------------------------------------
 #extra-curricular-activities {
@@ -96,7 +96,11 @@ p::before {
   width: 35%;
   height: 48vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  padding: 5%;
+  gap: 5%;
 }
 
 #image-holder {
@@ -107,6 +111,25 @@ p::before {
   border: 4px solid limegreen;
 
   animation: example 5s infinite;
+}
+
+.navigatingButton {
+  border: 2px solid orange;
+  color: orange;
+  background-color: #8F4A17;
+  font-family: 'Roboto', sans-serif;
+  font-weight: lighter;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.navigatingButton:hover {
+  border: 3px solid lime;
+  color: lime;
+  font-weight: 500;
+  background-color: #5C44DB;
+  padding: 5px 10px;
 }
 
 
