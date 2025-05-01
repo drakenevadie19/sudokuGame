@@ -5,7 +5,7 @@ Sudoku Game is a full-stack web application that allows users to play Sudoku, tr
 
 ## 💻 Technologies Used
 - Front-end: Angular (Ngrx, RxJS, AngularCLI), Bootstrap5, Material UI, SweetAlert, Vercel (Deployment)
-- Back-end: Spring Boot, RestAPI, Kafka, RabbitMQ, Docker, Kubernetes, Azure DevOps, Render (Deployment)
+- Back-end: Spring Boot, RestAPI, (incoming: Kafka, RabbitMQ, Docker, Kubernetes, Azure DevOps, Render (Deployment))
 
 ## ⁉️ How to consult this repository
 - I have divided into 2 folders, which represents front-end and back-end sides. 
